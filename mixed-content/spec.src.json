@@ -1,0 +1,200 @@
+{
+  "specification": [
+    {
+      "name": "optionally-blockable",
+      "title": "Optionally-blockable content",
+      "description": "Test behavior of optionally-blockable content",
+      "specification_url": "http://www.w3.org/TR/mixed-content/#category-optionally-blockable",
+      "test_expansion": [
+        {
+          "name": "opt-in-blocks",
+          "expansion": "default",
+          "source_scheme": "https",
+          "opt_in_method": ["http-csp", "meta-csp"],
+          "context_nesting": "top-level",
+          "redirection": "*",
+          "subresource": {
+            "blockable": [],
+            "optionally-blockable": "*"
+          },
+          "origin": ["cross-origin-http", "same-host-http"],
+          "expectation": "blocked"
+        },
+        {
+          "name": "no-opt-in-allows",
+          "expansion": "default",
+          "source_scheme": "https",
+          "opt_in_method": "no-opt-in",
+          "context_nesting": "top-level",
+          "redirection": "*",
+          "subresource": {
+            "blockable": [],
+            "optionally-blockable": "*"
+          },
+          "origin": ["cross-origin-http", "same-host-http"],
+          "expectation": "allowed"
+        }
+      ]
+    },
+    {
+      "name": "blockable",
+      "title": "Blockable content",
+      "description": "Test behavior of blockable content.",
+      "specification_url": "http://www.w3.org/TR/mixed-content/#category-blockable",
+      "test_expansion": [
+        {
+          "name": "opt-in-blocks",
+          "expansion": "default",
+          "source_scheme": "https",
+          "opt_in_method": ["http-csp", "meta-csp"],
+          "context_nesting": "top-level",
+          "redirection": "*",
+          "subresource": {
+            "blockable": "*",
+            "optionally-blockable": []
+          },
+          "origin": ["cross-origin-http", "same-host-http"],
+          "expectation": "blocked"
+        },
+        {
+          "name": "no-opt-in-blocks",
+          "expansion": "default",
+          "source_scheme": "https",
+          "opt_in_method": "no-opt-in",
+          "context_nesting": "top-level",
+          "redirection": "*",
+          "subresource": {
+            "blockable": "*",
+            "optionally-blockable": []
+          },
+          "origin": ["cross-origin-http", "same-host-http"],
+          "expectation": "blocked"
+        }
+      ]
+    },
+    {
+      "name": "allowed",
+      "title": "Allowed content",
+      "description": "Test behavior of allowed content.",
+      "specification_url": "http://www.w3.org/TR/mixed-content/",
+      "test_expansion": [
+        {
+          "name": "any-https-allowed",
+          "expansion": "default",
+          "source_scheme": "*",
+          "opt_in_method": ["http-csp", "meta-csp"],
+          "context_nesting": "top-level",
+          "redirection": "*",
+          "subresource": {
+            "blockable": "*",
+            "optionally-blockable": "*"
+          },
+          "origin": ["cross-origin-https", "same-host-https"],
+          "expectation": "allowed"
+        }
+      ]
+    }
+  ],
+
+  "excluded_tests": [
+    {
+      "name": "TEMP-any-https-allowed",
+      "expansion": "default",
+      "source_scheme": "*",
+      "opt_in_method": ["http-csp", "meta-csp"],
+      "context_nesting": "top-level",
+      "redirection": "*",
+      "subresource": {
+        "blockable": "*",
+        "optionally-blockable": "*"
+      },
+      "origin": ["cross-origin-https", "same-host-https"],
+      "expectation": "allowed"
+    },
+    {
+      "name": "TEMP-subresources-not-supported",
+      "expansion": "*",
+      "source_scheme": "*",
+      "opt_in_method": "*",
+      "context_nesting": "*",
+      "redirection": "*",
+      "subresource": {
+        "blockable": [
+          "link-css-tag",
+          "websocket-request",
+          "worker-request"
+        ],
+        "optionally-blockable": [
+          "audio-tag",
+          "video-tag",
+          "source-tag",
+          "object-tag",
+          "link-prefetch-tag"
+        ]
+      },
+      "origin": "*",
+      "expectation": "*"
+    }
+  ],
+
+  "test_expansion_schema": {
+    "expansion": [
+      "default",
+      "override"
+    ],
+    "source_scheme": [
+      "http",
+      "https"
+    ],
+    "opt_in_method": [
+      "no-opt-in",
+      "http-csp",
+      "meta-csp",
+      "img-crossorigin"
+    ],
+    "redirection": [
+      "no-redirect",
+      "keep-scheme-redirect",
+      "swap-scheme-redirect"
+    ],
+    "context_nesting": [
+      "top-level",
+      "l1-http",
+      "l1-https",
+      "l1-http-l2-http",
+      "l1-http-l2-https",
+      "l1-https-l2-http",
+      "l1-https-l2-https"
+    ],
+    "origin": [
+      "same-host-https",
+      "same-host-http",
+      "cross-origin-https",
+      "cross-origin-http"
+    ],
+    "subresource": {
+      "blockable": [
+        "iframe-tag",
+        "script-tag",
+        "link-css-tag",
+        "form-tag",
+        "xhr-request",
+        "worker-request",
+        "fetch-request",
+        "websocket-request"
+      ],
+      "optionally-blockable": [
+        "img-tag",
+        "audio-tag",
+        "video-tag",
+        "source-tag",
+        "object-tag",
+        "link-prefetch-tag"
+      ]
+    },
+    "expectation": [
+      "allowed",
+      "blocked"
+    ]
+  }
+}
