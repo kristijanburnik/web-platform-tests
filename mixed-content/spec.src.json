@@ -79,17 +79,17 @@
       "specification_url": "http://www.w3.org/TR/mixed-content/",
       "test_expansion": [
         {
-          "name": "any-https-allowed",
+          "name": "sample-allowed",
           "expansion": "default",
-          "source_scheme": "*",
-          "opt_in_method": ["http-csp", "meta-csp"],
+          "source_scheme": "https",
+          "opt_in_method": "*",
           "context_nesting": "top-level",
           "redirection": "*",
           "subresource": {
             "blockable": "*",
             "optionally-blockable": "*"
           },
-          "origin": ["cross-origin-https", "same-host-https"],
+          "origin": ["same-host-https"],
           "expectation": "allowed"
         }
       ]
@@ -97,20 +97,6 @@
   ],
 
   "excluded_tests": [
-    {
-      "name": "TEMP-any-https-allowed",
-      "expansion": "default",
-      "source_scheme": "*",
-      "opt_in_method": ["http-csp", "meta-csp"],
-      "context_nesting": "top-level",
-      "redirection": "*",
-      "subresource": {
-        "blockable": "*",
-        "optionally-blockable": "*"
-      },
-      "origin": ["cross-origin-https", "same-host-https"],
-      "expectation": "allowed"
-    },
     {
       "name": "TEMP-subresources-not-supported",
       "expansion": "*",
@@ -120,17 +106,9 @@
       "redirection": "*",
       "subresource": {
         "blockable": [
-          "link-css-tag",
-          "websocket-request",
-          "worker-request"
+          "websocket-request"
         ],
-        "optionally-blockable": [
-          "audio-tag",
-          "video-tag",
-          "source-tag",
-          "object-tag",
-          "link-prefetch-tag"
-        ]
+        "optionally-blockable": []
       },
       "origin": "*",
       "expectation": "*"
@@ -187,7 +165,7 @@
         "img-tag",
         "audio-tag",
         "video-tag",
-        "source-tag",
+        "picture-tag",
         "object-tag",
         "link-prefetch-tag"
       ]

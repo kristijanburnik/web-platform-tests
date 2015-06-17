@@ -1,13 +1,3 @@
-// TODO(kristijanburnik): Remove unused functions.
-
-function appendIframeToBody(url) {
-  var iframe = document.createElement("iframe");
-  iframe.src = url;
-  document.body.appendChild(iframe);
-
-  return iframe;
-}
-
 function normalizePort(targetPort) {
   var defaultPorts = [80, 443];
   var isDefaultPortForProtocol = (defaultPorts.indexOf(targetPort) >= 0);
@@ -16,137 +6,114 @@ function normalizePort(targetPort) {
           "" : ":" + targetPort;
 }
 
-function wrapResult(url, headers) {
-  var result = {
-    location: url,
-    referrer: headers.referer,
-    headers:headers
-  };
-
-  return result;
+function setAttributes(el, attrs) {
+  attrs = attrs || {}
+  for (var attr in attrs)
+    el[attr] = attrs[attr];
 }
 
-function queryIframe(url, callback) {
-  var iframe = appendIframeToBody(url);
-  var listener = function(event) {
-    if (event.source != iframe.contentWindow)
-      return;
+function createElement(tagName, attrs, parent) {
+  var el = document.createElement(tagName);
+  setAttributes(el, attrs);
+  if (parent && parent.appendChild)
+    parent.appendChild(el);
 
-    callback(event.data, url);
-    window.removeEventListener("message", listener);
-  }
-  window.addEventListener("message", listener);
+  return el;
 }
 
-function queryImage(src, callback) {
-  var image = new Image();
-  image.crossOrigin = "Anonymous";
-  image.onload = function() {
-    callback(image);
-  }
-  image.src = src;
-  document.body.appendChild(image)
+function createHelperIframe(name) {
+  return createElement("iframe", {"name": name}, document.body);
 }
 
-function queryXhr(url, callback) {
+function queryIframe(url) {
+  createElement("iframe", {"src": url}, document.body);
+}
+
+function queryImage(url) {
+  createElement("img", {"src": url}, document.body)
+}
+
+function queryXhr(url) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.responseType = "json";
-  xhr.onreadystatechange = function(e) {
-    if (this.readyState == 4 && this.status == 200) {
-      callback(this.response);
-    }
-  };
   xhr.send();
 }
 
-function queryWorker(url, callback) {
+function queryWorker(url) {
   var worker = new Worker(url);
-  worker.onmessage = function(event) {
-    callback(event.data);
-  };
+  console.log("worker", url);
+  worker.postMessage();
 }
 
-function queryFetch(url, callback) {
+function queryFetch(url) {
   try {
-    fetch(url).then(function(response) {
-        response.json().then(function(result) {
-          callback(result);
-        });
-      }, function() {
-        console.warn("Failed fetch of", url);
-      }
-    );
+    fetch(url);
   } catch (ex) {
-    console.log("Failed fetch ctor", ex);
+    console.error("Failed: fetch constructor.", ex);
   }
 }
 
-function queryNavigable(element, url, callback, attributes) {
+function queryNavigable(element, url) {
   var navigable = element
-  navigable.href = url;
-  navigable.target = "helper-iframe";
-
-  var helperIframe = document.createElement("iframe")
-  helperIframe.name = "helper-iframe"
-  document.body.appendChild(helperIframe)
-
-  // Extend element with attributes. (E.g. "referrer_policy" or "rel")
-  if (attributes) {
-    for (var attr in attributes) {
-      navigable[attr] = attributes[attr];
-    }
-  }
-
-  var listener = function(event) {
-    if (event.source != helperIframe.contentWindow)
-      return;
-
-    callback(event.data);
-    window.removeEventListener("message", listener);
-  }
-  window.addEventListener("message", listener);
-
+  setAttributes(navigable,
+                {"href": url,
+                 "target": createHelperIframe("helper-iframe").name});
   navigable.click();
 }
 
-function queryLink(url, callback, referrer_policy) {
-  var a = document.createElement("a");
-  a.innerHTML = "Link to subresource";
-  document.body.appendChild(a);
-  queryNavigable(a, url, callback, referrer_policy)
+function queryAnchor(url) {
+  var a = createElement("a", {"innerHTML": "Link to resource"}, document.body);
+  queryNavigable(a, url)
 }
 
-function queryAreaLink(url, callback, referrer_policy) {
-  var area = document.createElement("area");
-  // TODO(kristijanburnik): Append to map and add image.
-  document.body.appendChild(area);
-  queryNavigable(area, url, callback, referrer_policy)
+function queryArea(url) {
+  var area = createElement("area", {}, document.body);
+  queryNavigable(area, url)
 }
 
-function queryScript(url, callback) {
-  var script = document.createElement("script");
-  script.src = url;
-
-  var listener = function(event) {
-    callback(event.data, url);
-    window.removeEventListener("message", listener);
-  }
-  window.addEventListener("message", listener);
-
-  document.body.appendChild(script);
+function queryScript(url) {
+  var script = createElement("script", {"src": url}, document.body);
 }
 
 function queryForm(url) {
-  var helperIframe = document.createElement("iframe")
-  helperIframe.name = "helper-iframe"
-  document.body.appendChild(helperIframe)
-
-  var form = document.createElement('form');
-  form.action = url;
-  form.target = helperIframe.name;
-
+  var form = createElement("form",
+                           {"action": url,
+                            "method": "POST",
+                            "target": createHelperIframe("helper-iframe").name},
+                           document.body);
   form.submit();
+}
+
+function queryLinkStylesheet(url) {
+  createElement("link", {"rel": "stylesheet", "href": url}, document.head);
+}
+
+function queryLinkPrefetch(url) {
+  createElement("link", {"rel": "prefetch", "href": url}, document.head);
+}
+
+function queryMedia(type, media_attrs, source_attrs) {
+  var mediaElement = createElement(type, media_attrs, document.body);
+  var sourceElement = createElement("source", source_attrs, mediaElement)
+  return mediaElement;
+}
+
+function queryVideo(url) {
+  queryMedia("video", {}, {type: "video/mp4", src: url});
+}
+
+function queryAudio(url) {
+  queryMedia("audio", {}, {type: "audio/mpeg", src: url});
+}
+
+function queryPicture(url) {
+ var picture = queryMedia("picture", {}, {"srcset": url, "type": "image/png"});
+ createElement("img", {"src": url}, picture);
+}
+
+function queryObject(url) {
+  createElement("object", {"data": url}, document.body);
 }
 
 

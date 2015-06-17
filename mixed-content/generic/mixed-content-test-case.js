@@ -24,15 +24,21 @@ function MixedContentTestCase(scenario, description, sanityChecker) {
   };
 
   var resourceInvoker = {
-    "a-tag": queryLink,
-    "area-tag": queryAreaLink,
+    "a-tag": queryAnchor,
+    "area-tag": queryArea,
     "fetch-request": queryFetch,
     "form-tag": queryForm,
     "iframe-tag": queryIframe,
     "img-tag":  queryImage,
     "script-tag": queryScript,
     "worker-request": queryWorker,
-    "xhr-request": queryXhr
+    "xhr-request": queryXhr,
+    "audio-tag": queryAudio,
+    "video-tag": queryVideo,
+    "picture-tag": queryPicture,
+    "object-tag": queryObject,
+    "link-css-tag": queryLinkStylesheet,
+    "link-prefetch-tag": queryLinkPrefetch
   };
 
   sanityChecker.checkScenario(scenario, resourceInvoker);
@@ -41,11 +47,18 @@ function MixedContentTestCase(scenario, description, sanityChecker) {
     "a-tag": "application/json",
     "area-tag": "application/json",
     "fetch-request": "application/json",
+    "form-tag": "text/html",
     "iframe-tag": "application/json",
     "img-tag":  "image/png",
     "script-tag": "application/javascript",
     "worker-request": "application/javascript",
-    "xhr-request": "application/json"
+    "xhr-request": "application/json",
+    "audio-tag": "audio/mpeg",
+    "video-tag": "video/mp4",
+    "picture-tag": "image/png",
+    "object-tag": "application/octet-stream",
+    "link-css-tag": "text/css",
+    "link-prefetch-tag": "text/html"
   };
 
   var assertInvoker = {
@@ -103,6 +116,10 @@ function MixedContentTestCase(scenario, description, sanityChecker) {
             })
             .then(function() {
               // Send request to check if the key has been torn down.
+              return xhrRequest(assertResourceRequestUrl);
+            }, function(error) {
+              console.warn("Resource request error.", error)
+              // When queryResource fails, we also check the key state.
               return xhrRequest(assertResourceRequestUrl);
             })
             .then(function(response) {
