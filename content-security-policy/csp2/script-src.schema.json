@@ -22,7 +22,7 @@
             "meta": ""
           },
           "action": "generate",
-          "path": "script-src/%(keyword_source)s/%(resource_origin)s/%(delivery_method)s/%(name)s.html",
+          "path": "%(_name)s/%(keyword_source)s/%(resource_origin)s/%(delivery_method)s/%(name)s.html",
           "template": {
             "__main__": "generic/template/test.%(__mode__)s.html.template",
             "test_js": "generic/template/script-src.test.js.template",
@@ -42,7 +42,7 @@
               "match_any": [["%(delivery_method)s", "http-csp"]],
               "do": [{
                 "action": "generate",
-                "path": "script-src/%(keyword_source)s/%(resource_origin)s/%(delivery_method)s/%(name)s.html.headers",
+                "path": "%(_name)s/%(keyword_source)s/%(resource_origin)s/%(delivery_method)s/%(name)s.html.headers",
                 "template": "Content-Security-Policy: script-src '%(keyword_source)s'"
               }]
             }
