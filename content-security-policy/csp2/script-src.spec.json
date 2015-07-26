@@ -16,6 +16,13 @@
         "keyword_source": "self",
         "resource_origin": "cross-origin",
         "expectation": "blocked"
+      },
+      {
+        "name": "unsafe-inline-allowed",
+        "delivery_method": "*",
+        "keyword_source": "unsafe-inline",
+        "resource_origin": "*",
+        "expectation": "allowed"
       }
     ]
   }]
