@@ -28,22 +28,25 @@
             "test_js": "generic/template/script-src.test.js.template",
             "generated_disclaimer": "generic/template/generated.disclaimer.template"
           },
-          "when":[{
-            "match_any":[["%(delivery_method)s", "http-csp"]],
-            "do":[{
-              "action": "generate",
-              "path": "script-src/%(delivery_method)s/%(resource_origin)s/%(keyword_source)s/%(name)s.html.headers",
-              "template": "Content-Security-Policy: script-src '%(keyword_source)s'"
-            }]
-          },
-          {
-            "match_any":[["%(delivery_method)s", "meta-csp"]],
-            "do":[{
-              "action": "set_extension",
-              "key": "meta",
-              "template": "\n    <meta http-equiv=\"Content-Security-Policy\" content=\"script-src '%(keyword_source)s\">"
-            }]
-          }]
+          "when": [
+            {
+              "match_any": [["%(delivery_method)s", "meta-csp"]],
+              "do":[{
+                "action": "update_extensions",
+                "extensions": {
+                  "meta": "\n    <meta http-equiv=\"Content-Security-Policy\" content=\"script-src '%(keyword_source)s'\">"
+                }
+              }]
+            },
+            {
+              "match_any": [["%(delivery_method)s", "http-csp"]],
+              "do":[{
+                "action": "generate",
+                "path": "script-src/%(delivery_method)s/%(resource_origin)s/%(keyword_source)s/%(name)s.html.headers",
+                "template": "Content-Security-Policy: script-src '%(keyword_source)s'"
+              }]
+            }
+          ]
         }
       }
     }
