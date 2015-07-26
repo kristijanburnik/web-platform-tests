@@ -16,7 +16,7 @@
             "delivery_method": "@delivery_method_schema",
             "keyword_source": "@keyword_source_schema",
             "resource_origin": "@resource_origin_schema",
-            "expectation": "@expecation_schema"
+            "expectation": "@expectation_schema"
           },
           "extensions": {
             "meta": ""
@@ -40,7 +40,7 @@
             },
             {
               "match_any": [["%(delivery_method)s", "http-csp"]],
-              "do":[{
+              "do": [{
                 "action": "generate",
                 "path": "script-src/%(delivery_method)s/%(resource_origin)s/%(keyword_source)s/%(name)s.html.headers",
                 "template": "Content-Security-Policy: script-src '%(keyword_source)s'"
@@ -54,5 +54,5 @@
   "#delivery_method_schema": ["http-csp", "meta-csp"],
   "#keyword_source_schema": ["self", "unsafe-inline", "unsafe-eval"],
   "#resource_origin_schema": ["same-origin", "cross-origin"],
-  "#expecation_schema": ["allowed", "blocked"]
+  "#expectation_schema": ["allowed", "blocked"]
 }
