@@ -1,0 +1,42 @@
+{
+  "/specification": {
+    "/*": {
+      "matches": {
+        "name": "non_empty_string",
+        "description": "non_empty_string",
+        "features": "non_empty_list"
+      },
+      "/features": {
+        "/*": {
+          "matches": {
+            "name": "non_empty_string",
+            "description": "non_empty_string",
+            "scenarios": "non_empty_list"
+          },
+          "/scenarios": {
+            "/*": {
+              "matches": {
+                "delivery_method": "@delivery_method_schema",
+                "directive": "@directive_schema",
+                "resource": "@resource_schema"
+              },
+              "action": "generate",
+              "path": "%(_name)s/%(name)s/%(directive)s/%(delivery_method)s/test.html",
+              "template": {
+                "__main__": "generic/template/test.%(__mode__)s.html.template",
+                "test_js": "generic/template/test.js.template"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "#delivery_method_schema": ["http-csp", "meta-csp"],
+  "#directive_schema": ["script-src", "media-src", "img-src"],
+  "#resource_schema": ["all"],
+  "#resource_domain":{
+    "all": "*",
+
+  }
+}

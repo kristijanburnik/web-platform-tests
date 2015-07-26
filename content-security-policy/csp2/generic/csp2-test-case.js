@@ -1,3 +1,4 @@
+// TODO(kristijanburnik): Update doc comments.
 /**
  * @fileoverview Test case for Content Security Policy Level 2 in
  *     Web Platform Tests.
@@ -18,6 +19,24 @@
  * @return {object} Object wrapping the start method used to run the test.
  */
 
-function ContentSecurityPolicyTestCase(scenario, description, sanityChecker) {
+function ContentSecurityPolicyTestCase(feature,
+                                       scenario,
+                                       description,
+                                       sanityChecker) {
 
+
+  var features = {
+    "script-src": ScriptSrcTestCase
+  };
+
+  return features[feature]();
 } // ContentSecurityPolicyTestCase
+
+
+function ScriptSrcTestCase() {
+  function runTest() {
+
+  }
+
+  return {start: runTest};
+}

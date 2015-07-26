@@ -2,19 +2,20 @@
 %(generated_disclaimer)s
 <html>
   <head>
-    <title>Content Security Policy - Level 2: %(__name)s</title>
+    <title>Content Security Policy - Level 2: %(_name)s</title>
     <meta charset='utf-8'>
-    <meta name="description" content="%(__description)s">
-    <link rel="author" title="Kristijan Burnik" href="burnik@chromium.org">
-    <link rel="help" href="%(__specification_url)s">
-    <meta name="assert" content="%(__description)s">
+    <meta name="description" content="%(_description)s">
+    <link rel="author" title="Kristijan Burnik" href="burnik@chromium.org">%(meta)s
+    <link rel="help" href="">
+    <meta name="assert" content="%(_description)s">
     <script src="/resources/testharness.js"></script>
     <script src="/resources/testharnessreport.js"></script>
     <script src="/content-security-policy/csp2/generic/common.js"></script>
     <script src="/content-security-policy/csp2/generic/csp2-test-case.js?pipe=sub"></script>
   </head>
   <body>
-    <script>%(test_js)s</script>
+    <script>%(test_js)s
+    </script>
     <div id="log"></div>
   </body>
 </html>

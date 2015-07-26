@@ -1,0 +1,43 @@
+{
+  "specification": [
+    {
+      "section": "enforcement",
+      "description": "Scenarios for testing CSP2 enforcement.",
+      "features": [
+        {
+          "feature": "single-policy",
+          "decription": "Test single policy.",
+          "delivery_method": ["http-csp", "meta-csp"],
+          "scenarios": [
+
+          ]
+        },
+        {
+          "feature": "multiple-policies",
+          "decription": "Test if browser enforces all policies",
+          "delivery_method": ["http-csp", "meta-csp"]
+        },
+        {
+          "feature": "csp-request-header",
+          "description": "Test if browser sends a CSP request HEADER",
+          "delivery_method": ["http-csp", "meta-csp"]
+        },
+        {
+          "feature": "nonces",
+          "description": "Test if nonces are being randomly generated?",
+          "delivery_method": ["http-csp", "meta-csp"]
+        },
+        {
+          "feature": "redirects",
+          "description": "Test browser behavior on redirects.",
+          "delivery_method": ["http-csp", "meta-csp"]
+        }
+      ]
+    },
+    {
+      "section": "reporting",
+      "description": "Scenarios for testing CSP2 reporting.",
+      "features": []
+    }
+  ]
+}

@@ -1,11 +1,20 @@
 {
   "specification": [
     {
-      "feature": "enforcement",
-
-    },
-    {
-      "feature": "reporting"
+      "name": "enforcement",
+      "description": "Scenarios for testing CSP2 enforcement.",
+      "features": [
+        {
+          "name": "single-policy",
+          "decription": "Test single policy.",
+          "scenarios": [
+            {
+              "delivery_method": "*",
+              "directive": "script-src"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,10 @@
+
+      ContentSecurityPolicyTestCase(
+        "script-src",
+        {
+          "delivery_method": "%(delivery_method)s",
+          "keyword_source": "%(keyword_source)s",
+          "resource_origin": "%(resource_origin)s",
+          "expectation": "%(expectation)s"
+        },
+        new SanityChecker()).start();

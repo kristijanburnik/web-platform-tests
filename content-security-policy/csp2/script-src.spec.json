@@ -1,0 +1,22 @@
+{
+  "specification": [{
+    "name": "script-src",
+    "description": "CSP tests for script-src",
+    "scenarios": [
+      {
+        "name": "self-same-origin-allowed",
+        "delivery_method": "*",
+        "keyword_source": "self",
+        "resource_origin": "same-origin",
+        "expectation": "allowed"
+      },
+      {
+        "name": "self-cross-origin-blocked",
+        "delivery_method": "*",
+        "keyword_source": "self",
+        "resource_origin": "cross-origin",
+        "expectation": "blocked"
+      }
+    ]
+  }]
+}

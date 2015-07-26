@@ -1,0 +1,5 @@
+ContentSecurityPolicyTestCase({
+  "delivery_method": "%(delivery_method)s",
+  "directive": "%(directive)s",
+  "resource": "%(resource)s"
+}, new SanityChecker()).start();
